@@ -2,7 +2,7 @@
 $ErrorActionPreference = "Stop"
 $Root = Split-Path $PSScriptRoot -Parent
 
-$Version = "1.0.0"
+$Version = "1.0.1"
 $cmakeLists = Join-Path $Root "CMakeLists.txt"
 if (Test-Path $cmakeLists) {
     $m = Select-String -Path $cmakeLists -Pattern 'project\(mnBazz VERSION (\d+\.\d+\.\d+)\)' | Select-Object -First 1

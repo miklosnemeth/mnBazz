@@ -8,7 +8,7 @@ Monofonikus basszusszintetizátor Windowsra. Két oszcillátor, sub, létra-szű
 
 A kész build a [Releases](https://github.com/miklosnemeth/mnBazz/releases) oldalon van.
 
-**Telepítő.** A `mnBazz-1.0.0-win64-setup.exe` rendszergazdaként fut. A VST3 mindig a `C:\Program Files\Common Files\VST3\mnBazz.vst3` mappába kerül. A Standalone külön pipa: ha be van jelölve, a program a `C:\Program Files\mnBazz\mnBazz.exe` helyre kerül, és megjelenik a Start menüben. Alapból ki van kapcsolva. Telepítés után a DAW-ban szkenneld újra a plugineket. Az eltávolító a VST3 mappát is törli.
+**Telepítő.** A `mnBazz-1.0.1-win64-setup.exe` rendszergazdaként fut. A VST3 mindig a `C:\Program Files\Common Files\VST3\mnBazz.vst3` mappába kerül. A Standalone külön pipa: ha be van jelölve, a program a `C:\Program Files\mnBazz\mnBazz.exe` helyre kerül, és megjelenik a Start menüben. Alapból ki van kapcsolva. Telepítés után a DAW-ban szkenneld újra a plugineket. Az eltávolító a VST3 mappát is törli.
 
 **Kézi másolás.** A zip ugyanazt a két fájlt tartalmazza mappa nélkül: a `mnBazz.vst3` bundle-t és a `Standalone\mnBazz.exe` programot.
 
@@ -46,7 +46,7 @@ cmake -B build -DCMAKE_BUILD_TYPE=Release -DGIT_EXECUTABLE="C:/Program Files/Git
 cmake --build build --config Release
 ```
 
-A `GIT_EXECUTABLE` csak akkor kell, ha a CMake nem találja a Git-et. A JUCE 8.0.8-at a CMake tölti le.
+A `GIT_EXECUTABLE` csak akkor kell, ha a CMake nem találja a Git-et. A JUCE 9.0.5-öt a CMake tölti le.
 
 Kimenet:
 
@@ -57,6 +57,6 @@ Csomag: `.\dist\package.ps1` — a verziót a `CMakeLists.txt` `project()` sorá
 
 ## Licenc
 
-A forrás a [JUCE](https://juce.com/) keretrendszerre épül, GPL feltételekkel (FetchContent, tag 8.0.8). A bináris terjesztése a [JUCE licenc](https://github.com/juce-framework/JUCE/blob/8.0.8/LICENSE.md) szerint GPL, vagy külön megvásárolt commercial licenc mellett lehetséges.
+A forrás a [JUCE](https://juce.com/) keretrendszerre épül, GPL feltételekkel (FetchContent, tag 9.0.5). A bináris terjesztése a [JUCE licenc](https://github.com/juce-framework/JUCE/blob/9.0.5/LICENSE.md) szerint GPL, vagy külön megvásárolt commercial licenc mellett lehetséges.
 
 A felület betűi a Montserrat és a Roboto Condensed, mindkettő SIL Open Font License.
