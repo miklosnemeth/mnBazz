@@ -188,7 +188,7 @@
     <h1>mn<span>Bazz</span></h1>
     <p class="lede">Monofonikus basszusszintetizátor. Két oszcillátor, sub, létraszűrő, és annyi preset, amennyi egy house- vagy techno-vonalhoz kell.</p>
     <div class="actions">
-      <a class="btn primary" href="https://github.com/miklosnemeth/mnBazz/releases">Letöltés 1.0</a>
+      <a class="btn primary" href="https://github.com/miklosnemeth/mnBazz/releases/download/v1.0.0/mnBazz-1.0.0-win64-setup.exe">Telepítő 1.0</a>
       <a class="btn ghost" href="https://github.com/miklosnemeth/mnBazz">Forráskód</a>
     </div>
   </div>
@@ -234,9 +234,9 @@
   </section>
   <section id="telepites">
     <h2>Telepítés</h2>
-    <p>Windows x64. A zipben a VST3 bundle és a standalone exe van.</p>
-    <pre>mnBazz.vst3  →  C:\Program Files\Common Files\VST3\
-Standalone\mnBazz.exe</pre>
+    <p>Windows x64. A telepítő a VST3-at a közös pluginkönyvtárba teszi. A Standalone külön választható, alapból nincs bepipálva; ha kéred, a Program Files alá és a Start menübe kerül. Kell hozzá rendszergazdai jog. Utána a DAW-ban plugin-újraszkennelés.</p>
+    <pre>VST3         C:\Program Files\Common Files\VST3\mnBazz.vst3
+Standalone   C:\Program Files\mnBazz\mnBazz.exe</pre>
     <p style="color:var(--dim)">Másolás után a DAW-ban plugin-újraszkennelés. Instrument sávra tedd: MIDI-t vár, hangot ad.</p>
     <h2>Fordítás</h2>
     <pre>cmake -B build -DCMAKE_BUILD_TYPE=Release

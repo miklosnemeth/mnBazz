@@ -17,4 +17,5 @@ x64/
 [Rr]elease/
 dist/staging/
 dist/*.zip
+dist/*.exe
 build_log.txt

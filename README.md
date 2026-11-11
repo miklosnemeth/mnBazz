@@ -6,11 +6,17 @@ A projektoldal: [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/m
 
 ## Telepítés
 
-A kész build a [Releases](https://github.com/miklosnemeth/mnBazz/releases) oldalon van, `mnBazz-1.0.0-win64.zip` néven.
+A kész build a [Releases](https://github.com/miklosnemeth/mnBazz/releases) oldalon van.
 
-**VST3.** Másold a `mnBazz.vst3` mappát a `C:\Program Files\Common Files\VST3\` könyvtárba, vagy a DAW saját VST3 útvonalára, majd szkenneld újra a plugineket. Instrument / Synth kategóriában jelenik meg.
+**Telepítő.** A `mnBazz-1.0.0-win64-setup.exe` rendszergazdaként fut. A VST3 mindig a `C:\Program Files\Common Files\VST3\mnBazz.vst3` mappába kerül. A Standalone külön pipa: ha be van jelölve, a program a `C:\Program Files\mnBazz\mnBazz.exe` helyre kerül, és megjelenik a Start menüben. Alapból ki van kapcsolva. Telepítés után a DAW-ban szkenneld újra a plugineket. Az eltávolító a VST3 mappát is törli.
 
-**Standalone.** Indítsd a `Standalone\mnBazz.exe` fájlt. A hangkimenet a Windows, illetve az ASIO eszköz beállításától függ.
+**Kézi másolás.** A zip ugyanazt a két fájlt tartalmazza mappa nélkül: a `mnBazz.vst3` bundle-t és a `Standalone\mnBazz.exe` programot.
+
+A telepítő újraépítése Release build után:
+
+```text
+& "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe" dist\mnBazz.iss
+```
 
 ## Hang
 
