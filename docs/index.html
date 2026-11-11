@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>mnBazz — mono bass synth</title>
-<meta name="description" content="mnBazz 1.0: monofonikus basszusszintetizátor Windowsra. VST3 és Standalone.">
+<title>mnBazz — mono bass synthesizer for Windows</title>
+<meta name="description" content="mnBazz 1.0: monophonic bass synthesizer for Windows. VST3 instrument and optional Standalone app. 42 factory presets for house, techno, and trance.">
+<link rel="canonical" href="https://miklosnemeth.github.io/mnBazz/">
+<link rel="alternate" hreflang="en" href="https://miklosnemeth.github.io/mnBazz/">
+<link rel="alternate" hreflang="hu" href="https://miklosnemeth.github.io/mnBazz/hu/">
+<link rel="alternate" hreflang="x-default" href="https://miklosnemeth.github.io/mnBazz/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="hu_HU">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
@@ -178,75 +184,76 @@
 <header>
   <nav>
     <a class="brand" href="#top">mnBazz</a>
-    <a class="hide" href="#hang">Hang</a>
-    <a class="hide" href="#preset">Preset</a>
-    <a class="hide" href="#telepites">Telepítés</a>
+    <a class="hide" href="#sound">Sound</a>
+    <a class="hide" href="#presets">Presets</a>
+    <a class="hide" href="#install">Install</a>
+    <a href="hu/">Magyar</a>
     <a href="https://github.com/miklosnemeth/mnBazz">GitHub</a>
   </nav>
   <div class="hero" id="top">
     <div class="mark"><i></i> 1.0 · Windows · VST3 + Standalone</div>
     <h1>mn<span>Bazz</span></h1>
-    <p class="lede">Monofonikus basszusszintetizátor. Két oszcillátor, sub, létraszűrő, és annyi preset, amennyi egy house- vagy techno-vonalhoz kell.</p>
+    <p class="lede">Monophonic bass synthesizer. Two oscillators, sub, ladder filter, and enough factory presets for house, techno, and trance lines.</p>
     <div class="actions">
-      <a class="btn primary" href="https://github.com/miklosnemeth/mnBazz/releases/download/v1.0.0/mnBazz-1.0.0-win64-setup.exe">Telepítő 1.0</a>
-      <a class="btn ghost" href="https://github.com/miklosnemeth/mnBazz">Forráskód</a>
+      <a class="btn primary" href="https://github.com/miklosnemeth/mnBazz/releases/download/v1.0.0/mnBazz-1.0.0-win64-setup.exe">Installer 1.0</a>
+      <a class="btn ghost" href="https://github.com/miklosnemeth/mnBazz/releases/latest">All releases</a>
     </div>
   </div>
-  <div class="grid" id="hang">
-    <article class="card amber"><b>OSC</b><p>Fűrész, négyszög, háromszög. Két hang, oktáv és cent. A sub négyszög, egy oktávval lejjebb.</p></article>
-    <article class="card coral"><b>Filter</b><p>Négypólusú létra, rezonancia, drive. A burkológörbe és a billentyű követi a hangot.</p></article>
-    <article class="card cyan"><b>Env</b><p>Külön ADSR a szűrőre és a hangerőre. A görbe a kártyán látszik.</p></article>
-    <article class="card violet"><b>LFO</b><p>Öt hullám a cutoffra és a hangmagasságra. A mod wheel a szűrőt nyitja.</p></article>
+  <div class="grid" id="sound">
+    <article class="card amber"><b>OSC</b><p>Saw, square, triangle. Two oscillators with octave and cent detune. Sub is a square one octave below OSC 1.</p></article>
+    <article class="card coral"><b>Filter</b><p>4-pole ladder, resonance, and drive in the filter path. Envelope and key tracking move the cutoff.</p></article>
+    <article class="card cyan"><b>Env</b><p>Separate ADSR for filter and amplitude. Each card shows its envelope shape.</p></article>
+    <article class="card violet"><b>LFO</b><p>Five waveforms for cutoff and pitch. Mod wheel opens the filter.</p></article>
   </div>
 </header>
 <main>
   <section>
     <div class="split">
       <div>
-        <h2>Egy hang, végig.</h2>
+        <h2>One note at a time.</h2>
         <ol class="flow">
-          <li><div><strong>Oszcillátorok</strong><span>OSC 1 adja a sub alapját is. OSC 2 centben elhangolható, −2…+2 oktáv.</span></div></li>
-          <li><div><strong>Létraszűrő</strong><span>A filter-ADSR ± tartományban mozgatja a cutoffot. A drive a létrába megy, nem utólagos torzító.</span></div></li>
-          <li><div><strong>Erősítő</strong><span>Saját ADSR, majd egy halk egyenirányítás, hogy a kimenet ne üljön DC-n.</span></div></li>
-          <li><div><strong>Játék</strong><span>Retrigger vagy legato, glide, pitch bend. Egyszerre egy hang.</span></div></li>
+          <li><div><strong>Oscillators</strong><span>OSC 1 feeds the sub. OSC 2 is detunable in cents, −2…+2 octaves.</span></div></li>
+          <li><div><strong>Ladder filter</strong><span>Filter ADSR moves cutoff in bipolar range. Drive saturates inside the ladder, not as a post effect.</span></div></li>
+          <li><div><strong>Amp</strong><span>Its own ADSR, then light DC blocking on the output.</span></div></li>
+          <li><div><strong>Play</strong><span>Retrig or legato, glide, pitch bend. Monophonic voice.</span></div></li>
         </ol>
       </div>
       <div>
-        <h2>A képernyőn</h2>
-        <p style="color:var(--dim); margin-top:0">Négy szín jelöli a jelutat: borostyán az oszcillátor és a kimenet, korall a szűrő, cián a burkológörbék, ibolya az LFO. Az OUTPUT kártyán oszcilloszkóp van, a szűrőn a görbe, a burkológörbéken a lefutás.</p>
-        <p style="color:var(--dim)">Az ablak aránya rögzített, átméretezhető.</p>
+        <h2>On screen</h2>
+        <p style="color:var(--dim); margin-top:0">Colour follows the signal path: amber for oscillators and output, coral for the filter, cyan for envelopes, violet for the LFO. The output card has a scope, the filter card shows the curve, envelope cards show their shapes.</p>
+        <p style="color:var(--dim)">Fixed aspect ratio, resizable window.</p>
       </div>
     </div>
   </section>
-  <section id="preset">
-    <h2>42 gyári preset</h2>
+  <section id="presets">
+    <h2>42 factory presets</h2>
     <table>
-      <thead><tr><th>Kategória</th><th>Mire való</th></tr></thead>
+      <thead><tr><th>Category</th><th>Examples</th></tr></thead>
       <tbody>
         <tr><td>Deep House</td><td>Velvet Floor, Deep Roller, Offbeat Deep, Slide Deep</td></tr>
         <tr><td>House</td><td>Jack Saw, Organ Stab, UKG Knock, Funky Roll</td></tr>
         <tr><td>Techno</td><td>Warehouse, Hypnotic, Peak Square, Low Rumble</td></tr>
         <tr><td>Trance</td><td>Rolling 138, Uplift Line, Psy Bite, Trance Gate</td></tr>
-        <tr><td>Sub, Classic, Acid, Funk, FX</td><td>A korábbi bank: Reese, 303, 808, wobble és a többi.</td></tr>
+        <tr><td>Sub, Classic, Acid, Funk, FX</td><td>Original bank: Reese, 303, 808, wobble, and more.</td></tr>
       </tbody>
     </table>
-    <p style="color:var(--dim)">A SAVE a <span class="path">Dokumentumok\mnBazz\Presets\</span> mappába ír <span class="path">.mnbuzz</span> fájlt. Ezek a listában csillaggal jelennek meg.</p>
+    <p style="color:var(--dim)">SAVE writes to <span class="path">Documents\mnBazz\Presets\</span> as <span class="path">.mnbuzz</span> files. User presets show with a <span class="path">*</span> in the list.</p>
   </section>
-  <section id="telepites">
-    <h2>Telepítés</h2>
-    <p>Windows x64. A telepítő a VST3-at a közös pluginkönyvtárba teszi. A Standalone külön választható, alapból nincs bepipálva; ha kéred, a Program Files alá és a Start menübe kerül. Kell hozzá rendszergazdai jog. Utána a DAW-ban plugin-újraszkennelés.</p>
+  <section id="install">
+    <h2>Install</h2>
+    <p>Windows x64. The installer always copies the VST3 to the common plug-in folder. Standalone is optional and unchecked by default; when selected, it installs to Program Files and adds a Start menu shortcut. Run as administrator, then rescan plug-ins in your DAW.</p>
     <pre>VST3         C:\Program Files\Common Files\VST3\mnBazz.vst3
 Standalone   C:\Program Files\mnBazz\mnBazz.exe</pre>
-    <p style="color:var(--dim)">Másolás után a DAW-ban plugin-újraszkennelés. Instrument sávra tedd: MIDI-t vár, hangot ad.</p>
-    <h2>Fordítás</h2>
+    <p style="color:var(--dim)">Use on an instrument track: MIDI in, audio out.</p>
+    <h2>Build from source</h2>
     <pre>cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release</pre>
-    <p style="color:var(--dim)">CMake 3.22, Visual Studio C++ fordító, Git. A JUCE 8.0.8-at a konfiguráció tölti le. A részletes leírás a <a href="https://github.com/miklosnemeth/mnBazz">README</a>-ben van.</p>
+    <p style="color:var(--dim)">CMake 3.22+, Visual Studio C++ toolchain, Git. JUCE 8.0.8 is fetched by CMake. Details in the <a href="https://github.com/miklosnemeth/mnBazz">README</a>.</p>
   </section>
 </main>
 <footer>
   <span>mnBazz 1.0 · MN</span>
-  <span>JUCE GPL · Montserrat és Roboto Condensed, OFL</span>
+  <span>JUCE GPL · Montserrat &amp; Roboto Condensed (OFL)</span>
 </footer>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 Monofonikus basszusszintetizátor Windowsra. Két oszcillátor, sub, létra-szűrő, két burkológörbe és LFO. **VST3** és **Standalone**.
 
-A projektoldal: [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/)
+**Home page and download:** [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/) ([magyar](https://miklosnemeth.github.io/mnBazz/hu/)) · [Latest release](https://github.com/miklosnemeth/mnBazz/releases/latest)
 
 ## Telepítés
 

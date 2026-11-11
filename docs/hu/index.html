@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mnBazz — monofonikus basszusszintetizátor</title>
+<meta name="description" content="mnBazz 1.0: monofonikus basszusszintetizátor Windowsra. VST3 és Standalone.">
+<link rel="canonical" href="https://miklosnemeth.github.io/mnBazz/hu/">
+<link rel="alternate" hreflang="en" href="https://miklosnemeth.github.io/mnBazz/">
+<link rel="alternate" hreflang="hu" href="https://miklosnemeth.github.io/mnBazz/hu/">
+<link rel="alternate" hreflang="x-default" href="https://miklosnemeth.github.io/mnBazz/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080b;
+    --bg2: #12151d;
+    --card: #171b25;
+    --line: #262c3a;
+    --text: #eff2f8;
+    --dim: #98a2b6;
+    --faint: #5b6579;
+    --amber: #ffb340;
+    --coral: #ff6f5e;
+    --cyan: #3ad0e8;
+    --violet: #a393ff;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(900px 420px at 12% -10%, rgba(255,179,64,.14), transparent 60%),
+      radial-gradient(700px 380px at 100% 0%, rgba(58,208,232,.08), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+  a { color: var(--amber); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header, main, footer { width: min(1040px, calc(100% - 40px)); margin-inline: auto; }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 0 8px;
+    font-size: 15px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  nav .brand {
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    color: var(--amber);
+    font-size: 18px;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-right: auto;
+  }
+  nav a { color: var(--dim); }
+  .hero { padding: 54px 0 28px; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--faint);
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  .mark i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 12px var(--amber);
+    display: block;
+  }
+  h1 {
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: clamp(48px, 8vw, 84px);
+    line-height: .95;
+    margin: 14px 0 12px;
+    letter-spacing: -0.03em;
+  }
+  h1 span { color: var(--amber); }
+  .lede { max-width: 38rem; color: var(--dim); font-size: 22px; margin: 0 0 28px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+  .btn.primary { background: var(--amber); color: #1a1206; }
+  .btn.primary:hover { text-decoration: none; filter: brightness(1.06); }
+  .btn.ghost { border: 1px solid var(--line); color: var(--text); background: rgba(23,27,37,.7); }
+  .btn.ghost:hover { text-decoration: none; border-color: var(--amber); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 42px 0; }
+  .card {
+    background: linear-gradient(#171b25, #12151d);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 16px 18px;
+    min-height: 148px;
+  }
+  .card b {
+    display: block;
+    font-family: Montserrat, sans-serif;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .card p { margin: 0; color: var(--dim); font-size: 16px; }
+  .card.amber b { color: var(--amber); }
+  .card.coral b { color: var(--coral); }
+  .card.cyan b { color: var(--cyan); }
+  .card.violet b { color: var(--violet); }
+  section { padding: 18px 0 8px; }
+  h2 {
+    font-family: Montserrat, sans-serif;
+    font-size: 28px;
+    margin: 0 0 12px;
+  }
+  .split { display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: start; }
+  ol.flow { margin: 0; padding: 0; list-style: none; counter-reset: n; }
+  ol.flow li {
+    counter-increment: n;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  ol.flow li::before {
+    content: counter(n, decimal-leading-zero);
+    color: var(--amber);
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    padding-top: 3px;
+  }
+  ol.flow strong { display: block; }
+  ol.flow span { color: var(--dim); }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+  code, .path { font-family: Consolas, ui-monospace, monospace; font-size: .92em; color: var(--cyan); }
+  pre {
+    background: #0a0c11;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    overflow: auto;
+    color: var(--dim);
+    font-size: 15px;
+  }
+  footer {
+    margin-top: 48px;
+    padding: 22px 0 40px;
+    color: var(--faint);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 15px;
+  }
+  @media (max-width: 800px) {
+    .grid, .split { grid-template-columns: 1fr 1fr; }
+    nav .hide { display: none; }
+  }
+  @media (max-width: 560px) {
+    .grid, .split { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a class="brand" href="#top">mnBazz</a>
+    <a class="hide" href="#hang">Hang</a>
+    <a class="hide" href="#preset">Preset</a>
+    <a class="hide" href="#telepites">Telepítés</a>
+    <a href="../">English</a>
+    <a href="https://github.com/miklosnemeth/mnBazz">GitHub</a>
+  </nav>
+  <div class="hero" id="top">
+    <div class="mark"><i></i> 1.0 · Windows · VST3 + Standalone</div>
+    <h1>mn<span>Bazz</span></h1>
+    <p class="lede">Monofonikus basszusszintetizátor. Két oszcillátor, sub, létraszűrő, és annyi preset, amennyi egy house- vagy techno-vonalhoz kell.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/miklosnemeth/mnBazz/releases/download/v1.0.0/mnBazz-1.0.0-win64-setup.exe">Telepítő 1.0</a>
+      <a class="btn ghost" href="https://github.com/miklosnemeth/mnBazz">Forráskód</a>
+    </div>
+  </div>
+  <div class="grid" id="hang">
+    <article class="card amber"><b>OSC</b><p>Fűrész, négyszög, háromszög. Két hang, oktáv és cent. A sub négyszög, egy oktávval lejjebb.</p></article>
+    <article class="card coral"><b>Filter</b><p>Négypólusú létra, rezonancia, drive. A burkológörbe és a billentyű követi a hangot.</p></article>
+    <article class="card cyan"><b>Env</b><p>Külön ADSR a szűrőre és a hangerőre. A görbe a kártyán látszik.</p></article>
+    <article class="card violet"><b>LFO</b><p>Öt hullám a cutoffra és a hangmagasságra. A mod wheel a szűrőt nyitja.</p></article>
+  </div>
+</header>
+<main>
+  <section>
+    <div class="split">
+      <div>
+        <h2>Egy hang, végig.</h2>
+        <ol class="flow">
+          <li><div><strong>Oszcillátorok</strong><span>OSC 1 adja a sub alapját is. OSC 2 centben elhangolható, −2…+2 oktáv.</span></div></li>
+          <li><div><strong>Létraszűrő</strong><span>A filter-ADSR ± tartományban mozgatja a cutoffot. A drive a létrába megy, nem utólagos torzító.</span></div></li>
+          <li><div><strong>Erősítő</strong><span>Saját ADSR, majd egy halk egyenirányítás, hogy a kimenet ne üljön DC-n.</span></div></li>
+          <li><div><strong>Játék</strong><span>Retrigger vagy legato, glide, pitch bend. Egyszerre egy hang.</span></div></li>
+        </ol>
+      </div>
+      <div>
+        <h2>A képernyőn</h2>
+        <p style="color:var(--dim); margin-top:0">Négy szín jelöli a jelutat: borostyán az oszcillátor és a kimenet, korall a szűrő, cián a burkológörbék, ibolya az LFO. Az OUTPUT kártyán oszcilloszkóp van, a szűrőn a görbe, a burkológörbéken a lefutás.</p>
+        <p style="color:var(--dim)">Az ablak aránya rögzített, átméretezhető.</p>
+      </div>
+    </div>
+  </section>
+  <section id="preset">
+    <h2>42 gyári preset</h2>
+    <table>
+      <thead><tr><th>Kategória</th><th>Mire való</th></tr></thead>
+      <tbody>
+        <tr><td>Deep House</td><td>Velvet Floor, Deep Roller, Offbeat Deep, Slide Deep</td></tr>
+        <tr><td>House</td><td>Jack Saw, Organ Stab, UKG Knock, Funky Roll</td></tr>
+        <tr><td>Techno</td><td>Warehouse, Hypnotic, Peak Square, Low Rumble</td></tr>
+        <tr><td>Trance</td><td>Rolling 138, Uplift Line, Psy Bite, Trance Gate</td></tr>
+        <tr><td>Sub, Classic, Acid, Funk, FX</td><td>A korábbi bank: Reese, 303, 808, wobble és a többi.</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--dim)">A SAVE a <span class="path">Dokumentumok\mnBazz\Presets\</span> mappába ír <span class="path">.mnbuzz</span> fájlt. Ezek a listában csillaggal jelennek meg.</p>
+  </section>
+  <section id="telepites">
+    <h2>Telepítés</h2>
+    <p>Windows x64. A telepítő a VST3-at a közös pluginkönyvtárba teszi. A Standalone külön választható, alapból nincs bepipálva; ha kéred, a Program Files alá és a Start menübe kerül. Kell hozzá rendszergazdai jog. Utána a DAW-ban plugin-újraszkennelés.</p>
+    <pre>VST3         C:\Program Files\Common Files\VST3\mnBazz.vst3
+Standalone   C:\Program Files\mnBazz\mnBazz.exe</pre>
+    <p style="color:var(--dim)">Másolás után a DAW-ban plugin-újraszkennelés. Instrument sávra tedd: MIDI-t vár, hangot ad.</p>
+    <h2>Fordítás</h2>
+    <pre>cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release</pre>
+    <p style="color:var(--dim)">CMake 3.22, Visual Studio C++ fordító, Git. A JUCE 8.0.8-at a konfiguráció tölti le. A részletes leírás a <a href="https://github.com/miklosnemeth/mnBazz">README</a>-ben van.</p>
+  </section>
+</main>
+<footer>
+  <span>mnBazz 1.0 · MN</span>
+  <span>JUCE GPL · Montserrat és Roboto Condensed, OFL</span>
+</footer>
+</body>
+</html>
