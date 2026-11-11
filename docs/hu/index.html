@@ -158,6 +158,21 @@
     color: var(--dim);
     font-size: 15px;
   }
+  .lang {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+    background: var(--card);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .lang .cur, .lang a { padding: 4px 12px; border-radius: 999px; }
+  .lang .cur { background: var(--amber); color: #1a1206; }
+  .lang a { color: var(--dim); text-decoration: none; }
+  .lang a:hover { color: var(--text); text-decoration: none; }
   footer {
     margin-top: 48px;
     padding: 22px 0 40px;
@@ -185,7 +200,7 @@
     <a class="hide" href="#hang">Hang</a>
     <a class="hide" href="#preset">Preset</a>
     <a class="hide" href="#telepites">Telepítés</a>
-    <a href="../">English</a>
+    <span class="lang" role="group" aria-label="Language / Nyelv"><a href="https://miklosnemeth.github.io/mnBazz/" hreflang="en" lang="en" title="English">EN</a><span class="cur" aria-current="true">HU</span></span>
     <a href="https://github.com/miklosnemeth/mnBazz">GitHub</a>
   </nav>
   <div class="hero" id="top">

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="notranslate">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
 <title>mnBazz — mono bass synthesizer for Windows</title>
 <meta name="description" content="mnBazz 1.0: monophonic bass synthesizer for Windows. VST3 instrument and optional Standalone app. 42 factory presets for house, techno, and trance.">
 <link rel="canonical" href="https://miklosnemeth.github.io/mnBazz/">
@@ -160,6 +161,21 @@
     color: var(--dim);
     font-size: 15px;
   }
+  .lang {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+    background: var(--card);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .lang .cur, .lang a { padding: 4px 12px; border-radius: 999px; }
+  .lang .cur { background: var(--amber); color: #1a1206; }
+  .lang a { color: var(--dim); text-decoration: none; }
+  .lang a:hover { color: var(--text); text-decoration: none; }
   footer {
     margin-top: 48px;
     padding: 22px 0 40px;
@@ -187,7 +203,7 @@
     <a class="hide" href="#sound">Sound</a>
     <a class="hide" href="#presets">Presets</a>
     <a class="hide" href="#install">Install</a>
-    <a href="hu/">Magyar</a>
+    <span class="lang" role="group" aria-label="Language / Nyelv"><span class="cur" aria-current="true">EN</span><a href="https://miklosnemeth.github.io/mnBazz/hu/" hreflang="hu" lang="hu" title="Magyar">HU</a></span>
     <a href="https://github.com/miklosnemeth/mnBazz">GitHub</a>
   </nav>
   <div class="hero" id="top">
