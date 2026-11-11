@@ -1,0 +1,12 @@
+mnBazz 1.0.0 — Windows x64
+
+VST3:
+  Másold a mnBazz.vst3 mappát ide:
+    C:\Program Files\Common Files\VST3\
+  (vagy a DAW VST3 útvonalára), majd szkenneld újra a plugineket.
+
+Standalone:
+  Futtasd a Standalone\mnBazz.exe fájlt.
+
+Monofonikus basszusszintetizátor. 42 gyári preset.
+Saját presetek: Dokumentumok\mnBazz\Presets\*.mnbuzz

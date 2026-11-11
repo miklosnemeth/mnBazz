@@ -1,0 +1,6 @@
+#pragma once
+
+// MNBAZZ_VERSION         release number from project(... VERSION) in CMakeLists.txt
+// MNBAZZ_VERSION_STRING  same, plus "-dev+<commit>" unless HEAD is tagged v<version>
+#define MNBAZZ_VERSION        "@PROJECT_VERSION@"
+#define MNBAZZ_VERSION_STRING "@MNBAZZ_VERSION_STRING@"
