@@ -33,11 +33,10 @@ SetupLogging=yes
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 
 [Languages]
-Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "standalone"; Description: "Standalone alkalmazás és Start menü parancsikon"; GroupDescription: "További elemek:"; Flags: unchecked
+Name: "standalone"; Description: "Standalone app and Start menu shortcut"; GroupDescription: "Additional components:"; Flags: unchecked
 
 [Files]
 Source: "{#Artefacts}\VST3\mnBazz.vst3\*"; DestDir: "{commoncf64}\VST3\mnBazz.vst3"; Flags: recursesubdirs createallsubdirs ignoreversion

@@ -1,62 +1,62 @@
 # mnBazz
 
-Monofonikus basszusszintetizátor Windowsra. Két oszcillátor, sub, létra-szűrő, két burkológörbe és LFO. **VST3** és **Standalone**.
+Monophonic bass synthesizer for Windows. Two oscillators, sub, ladder filter, two envelopes, and an LFO. **VST3** and **Standalone**.
 
-**Home page and download:** [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/) ([magyar](https://miklosnemeth.github.io/mnBazz/hu/)) · [Latest release](https://github.com/miklosnemeth/mnBazz/releases/latest)
+**Home page and download:** [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/) ([magyar](https://miklosnemeth.github.io/mnBazz/hu/)) · [Latest release](https://github.com/miklosnemeth/mnBazz/releases/latest) · [Changelog](CHANGELOG.md)
 
-## Telepítés
+## Install
 
-A kész build a [Releases](https://github.com/miklosnemeth/mnBazz/releases) oldalon van.
+Builds are on [Releases](https://github.com/miklosnemeth/mnBazz/releases).
 
-**Telepítő.** A `mnBazz-1.0.1-win64-setup.exe` rendszergazdaként fut. A VST3 mindig a `C:\Program Files\Common Files\VST3\mnBazz.vst3` mappába kerül. A Standalone külön pipa: ha be van jelölve, a program a `C:\Program Files\mnBazz\mnBazz.exe` helyre kerül, és megjelenik a Start menüben. Alapból ki van kapcsolva. Telepítés után a DAW-ban szkenneld újra a plugineket. Az eltávolító a VST3 mappát is törli.
+**Installer.** Run `mnBazz-1.0.1-win64-setup.exe` as administrator. The VST3 always goes to `C:\Program Files\Common Files\VST3\mnBazz.vst3`. Standalone is a separate checkbox, off by default. When selected, the app is installed to `C:\Program Files\mnBazz\mnBazz.exe` and a Start menu shortcut is created. Rescan plug-ins in the DAW afterwards. Uninstall also removes the VST3 folder.
 
-**Kézi másolás.** A zip ugyanazt a két fájlt tartalmazza mappa nélkül: a `mnBazz.vst3` bundle-t és a `Standalone\mnBazz.exe` programot.
+**Manual copy.** The zip contains the same two files with no extra wrapper folder: the `mnBazz.vst3` bundle and `Standalone\mnBazz.exe`.
 
-A telepítő újraépítése Release build után:
+Rebuild the installer after a Release build:
 
 ```text
 & "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe" dist\mnBazz.iss
 ```
 
-## Hang
+## Sound
 
-| Szakasz | Mit csinál |
+| Section | What it does |
 | --- | --- |
-| OSC 1 / OSC 2 | Fűrész, négyszög vagy háromszög. Oktáv −2…+2. A második oszcillátor centben elhangolható. |
-| Sub | Négyszög, egy oktávval az első oszcillátor alatt. |
-| Filter | Négypólusú létraszűrő, rezonancia, drive, burkológörbe-mélység és billentyűkövetés. |
-| Filter Env / Amp Env | Külön ADSR a szűrőre és a hangerőre. |
-| LFO | Háromszög, négyszög, fűrész, sample & hold vagy szinusz. A cutoffra és a hangmagasságra megy. |
-| Play | Glide, retrigger vagy legato. A mod wheel (CC 1) a cutoffot nyitja, a pitch bend hangolja. |
+| OSC 1 / OSC 2 | Saw, square, or triangle. Octave −2…+2. OSC 2 can be detuned in cents. |
+| Sub | Square, one octave below OSC 1. |
+| Filter | 4-pole ladder, resonance, drive, envelope depth, and key tracking. |
+| Filter Env / Amp Env | Separate ADSR for the filter and the amplifier. |
+| LFO | Triangle, square, saw, sample & hold, or sine, routed to cutoff and pitch. |
+| Play | Glide, retrigger or legato. Mod wheel (CC 1) opens the cutoff. Pitch bend tunes the note. |
 
-Egy hang szól egyszerre. Átfedő billentyűknél legato módban a burkológörbe nem indul újra, retrigger módban igen.
+One note at a time. In legato mode an overlapping key does not restart the envelopes. In retrigger mode it does.
 
-## Presetek
+## Presets
 
-42 gyári preset: Deep House, House, Techno, Trance, Sub, Classic, Acid, Funk, FX. A fejléc kategória-szűrője szűkíti a listát, a nyilak léptetnek.
+42 factory presets: Deep House, House, Techno, Trance, Sub, Classic, Acid, Funk, FX. The category filter in the header narrows the list. The arrows step through it.
 
-A **SAVE** a `Dokumentumok\mnBazz\Presets\` mappába ír egy `.mnbuzz` fájlt. A **LOAD** onnan olvas. A felhasználói presetek a listában `*` előtaggal jelennek meg. Az **INIT** az első gyári presetet tölti be.
+**SAVE** writes a `.mnbuzz` file to `Documents\mnBazz\Presets\`. **LOAD** reads from there. User presets are prefixed with `*` in the list. **INIT** loads the first factory preset.
 
-## Forrásból
+## Build from source
 
-Szükséges: Windows x64, CMake 3.22+, Visual Studio 2022 (vagy újabb) C++ fordító, Git.
+Requires Windows x64, CMake 3.22+, a Visual Studio 2022 (or newer) C++ toolchain, and Git.
 
 ```text
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DGIT_EXECUTABLE="C:/Program Files/Git/bin/git.exe"
 cmake --build build --config Release
 ```
 
-A `GIT_EXECUTABLE` csak akkor kell, ha a CMake nem találja a Git-et. A JUCE 9.0.5-öt a CMake tölti le.
+`GIT_EXECUTABLE` is only needed when CMake cannot find Git. CMake fetches JUCE 9.0.5.
 
-Kimenet:
+Output:
 
 - `build/mnBazz_artefacts/Release/VST3/mnBazz.vst3/`
 - `build/mnBazz_artefacts/Release/Standalone/mnBazz.exe`
 
-Csomag: `.\dist\package.ps1` — a verziót a `CMakeLists.txt` `project()` sorából olvassa, és `dist\mnBazz-<verzió>-win64.zip` fájlt készít.
+Package: `.\dist\package.ps1` reads the version from the `project()` line in `CMakeLists.txt` and writes `dist\mnBazz-<version>-win64.zip`.
 
-## Licenc
+## License
 
-A forrás a [JUCE](https://juce.com/) keretrendszerre épül, GPL feltételekkel (FetchContent, tag 9.0.5). A bináris terjesztése a [JUCE licenc](https://github.com/juce-framework/JUCE/blob/9.0.5/LICENSE.md) szerint GPL, vagy külön megvásárolt commercial licenc mellett lehetséges.
+The source is built on the [JUCE](https://juce.com/) framework under the GPL (FetchContent, tag 9.0.5). Distributing the binary follows the [JUCE licence](https://github.com/juce-framework/JUCE/blob/9.0.5/LICENSE.md): GPL, or a separately purchased commercial licence.
 
-A felület betűi a Montserrat és a Roboto Condensed, mindkettő SIL Open Font License.
+The UI fonts are Montserrat and Roboto Condensed, both under the SIL Open Font License.

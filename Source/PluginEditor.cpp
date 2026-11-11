@@ -49,8 +49,8 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
     ae.viewWidth = 196.f;
 
     // preset bar
-    presetPrev.setTooltip (U ("Előző preset"));
-    presetNext.setTooltip (U ("Következő preset"));
+    presetPrev.setTooltip (U ("Previous preset"));
+    presetNext.setTooltip (U ("Next preset"));
     presetPrev.onClick = [this] { stepPreset (-1); };
     presetNext.onClick = [this] { stepPreset (+1); };
     addAndMakeVisible (presetPrev);
@@ -58,11 +58,11 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
 
     categoryBox.addItemList (FactoryPresets::categories(), 1);
     categoryBox.setSelectedId (1, juce::dontSendNotification);
-    categoryBox.setTooltip ("Kategória");
+    categoryBox.setTooltip ("Category");
     categoryBox.onChange = [this] { rebuildPresetList(); };
     addAndMakeVisible (categoryBox);
 
-    presetBox.setTooltip ("Preset lista");
+    presetBox.setTooltip ("Preset list");
     presetBox.onChange = [this]
     {
         if (ignorePresetChange) return;
@@ -70,9 +70,9 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
     };
     addAndMakeVisible (presetBox);
 
-    initBtn.setTooltip (U ("Gyári init"));
-    saveBtn.setTooltip (U ("Saját preset mentése"));
-    loadBtn.setTooltip (U ("Saját preset betöltése"));
+    initBtn.setTooltip (U ("Factory init"));
+    saveBtn.setTooltip (U ("Save user preset"));
+    loadBtn.setTooltip (U ("Load user preset"));
     initBtn.onClick = [this]
     {
         proc.loadFactoryPreset (0);
@@ -237,7 +237,7 @@ void MnBazzEditor::stepPreset (int delta)
 void MnBazzEditor::saveUserPreset()
 {
     UserPresets::ensureDirectory();
-    fileChooser = std::make_unique<juce::FileChooser> (U ("Preset mentése"), UserPresets::directory(), "*.mnbuzz");
+    fileChooser = std::make_unique<juce::FileChooser> (U ("Save preset"), UserPresets::directory(), "*.mnbuzz");
     const auto chooserFlags = juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::warnAboutOverwriting;
     fileChooser->launchAsync (chooserFlags, [this] (const juce::FileChooser& ch)
     {
@@ -255,7 +255,7 @@ void MnBazzEditor::saveUserPreset()
 void MnBazzEditor::loadUserPreset()
 {
     UserPresets::ensureDirectory();
-    fileChooser = std::make_unique<juce::FileChooser> (U ("Preset betöltése"), UserPresets::directory(), "*.mnbuzz");
+    fileChooser = std::make_unique<juce::FileChooser> (U ("Load preset"), UserPresets::directory(), "*.mnbuzz");
     fileChooser->launchAsync (juce::FileBrowserComponent::openMode, [this] (const juce::FileChooser& ch)
     {
         auto file = ch.getResult();

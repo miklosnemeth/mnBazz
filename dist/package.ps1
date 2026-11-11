@@ -15,8 +15,8 @@ $Staging = Join-Path $PSScriptRoot "staging"
 $ZipName = "mnBazz-$Version-win64.zip"
 $ZipPath = Join-Path $PSScriptRoot $ZipName
 
-if (-not (Test-Path $Vst3Src)) { throw "Hiányzik: $Vst3Src — előbb Release build." }
-if (-not (Test-Path $ExeSrc)) { throw "Hiányzik: $ExeSrc — előbb Release build." }
+if (-not (Test-Path $Vst3Src)) { throw "Missing: $Vst3Src — build Release first." }
+if (-not (Test-Path $ExeSrc)) { throw "Missing: $ExeSrc — build Release first." }
 
 if (Test-Path $Staging) { Remove-Item $Staging -Recurse -Force }
 New-Item -ItemType Directory -Path (Join-Path $Staging "Standalone") | Out-Null
@@ -27,5 +27,5 @@ Copy-Item (Join-Path $PSScriptRoot "INSTALL.txt") (Join-Path $Staging "INSTALL.t
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Compress-Archive -Path (Join-Path $Staging "*") -DestinationPath $ZipPath -CompressionLevel Optimal
 
-Write-Host "Kész: $ZipPath"
+Write-Host "Done: $ZipPath"
 Remove-Item $Staging -Recurse -Force

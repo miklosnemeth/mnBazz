@@ -194,7 +194,7 @@ inline void paintCard(juce::Graphics& g, juce::Rectangle<int> card)
     g.drawRoundedRectangle(card.toFloat().reduced(0.5f), metrics::cardRadius, 1.25f);
 }
 
-// Section block: narancs sáv + cím, alatta a controls a háttéren (nincs kártya keret).
+// Section block: orange bar and title, controls on the background (no card frame).
 inline void paintSectionHeader(juce::Graphics& g, juce::Rectangle<int> section,
                                const juce::String& title, const juce::Font& titleFont, int headerHeight)
 {
