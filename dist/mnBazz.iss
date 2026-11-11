@@ -2,7 +2,7 @@
 ;   & "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe" dist\mnBazz.iss
 
 #define MyAppName "mnBazz"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "MN"
 #define MyAppURL "https://miklosnemeth.github.io/mnBazz/"
 #define Root ".."
