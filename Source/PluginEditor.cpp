@@ -24,21 +24,21 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
 
     cards.reserve (8);
     addCard ("OSC 1", amber(), { { "osc1Oct", "Octave" }, { "osc1Level", "Level" } }, "osc1Wave");
-    addCard ("OSC 2", amber(), { { "osc2Oct", "Octave" }, { "osc2Detune", "Detune" }, { "osc2Level", "Level" } }, "osc2Wave");
-    addCard ("SUB / PLAY", amber(), { { "subLevel", "Sub" }, { "glide", "Glide" } }, "legato");
+    addCard ("OSC 2", amber(), { { "osc2Oct", "Octave" }, { "osc2Detune", "Detune" }, { "osc2Level", "Level" }, { "osc2Width", "Pulse" } }, "osc2Wave");
+    addCard ("SUB / PLAY", amber(), { { "subLevel", "Sub" }, { "glide", "Glide" }, { "velToAmp", "Vel Amp" }, { "velToFilt", "Vel Flt" }, { "noiseLevel", "Noise" } }, "legato");
 
-    auto& out = addCard ("OUTPUT", amber(), { { "master", "Volume" } });
+    auto& out = addCard ("OUTPUT", amber(), { { "master", "Volume" } }, "outputMode");
     out.view = scopeView.get();
     out.viewWidth = 158.f;
     out.viewOnLeft = true;
 
     auto& flt = addCard ("FILTER", coral(), { { "cutoff", "Cutoff" }, { "res", "Reso" }, { "drive", "Drive" },
-                                              { "envAmt", "Env Amt" }, { "keytrack", "Key Track" } });
+                                              { "envAmt", "Env Amt" }, { "keytrack", "Key Track" }, { "fEnvToRes", "Env Res" } });
     flt.view = filterView.get();
     flt.viewWidth = 232.f;
 
     addCard ("LFO", violet(), { { "lfoRate", "Rate" }, { "lfoCutoff", "To Cutoff" }, { "lfoPitch", "To Pitch" },
-                                { "modCutoff", "Mod Wheel" } }, "lfoShape");
+                                { "lfoToAmp", "To Amp" }, { "modCutoff", "Mod Cut" }, { "modToPitch", "Mod Pit" } }, "lfoShape");
 
     auto& fe = addCard ("FILTER ENV", cyan(), { { "fA", "Attack" }, { "fD", "Decay" }, { "fS", "Sustain" }, { "fR", "Release" } });
     fe.view = filterEnvView.get();
@@ -77,10 +77,13 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
     {
         proc.loadFactoryPreset (0);
         rebuildPresetList();
+        markPresetClean();
     };
     saveBtn.onClick = [this] { saveUserPreset(); };
     loadBtn.onClick = [this] { loadUserPreset(); };
-    for (auto* btn : { &initBtn, &saveBtn, &loadBtn })
+    presetMenuBtn.setTooltip ("Preset actions");
+    presetMenuBtn.onClick = [this] { showPresetMenu(); };
+    for (auto* btn : { &initBtn, &saveBtn, &loadBtn, &presetMenuBtn })
         addAndMakeVisible (*btn);
 
     applyColours();
@@ -93,6 +96,8 @@ MnBazzEditor::MnBazzEditor (MnBazzProcessor& p)
     setConstrainer (&aspectConstrainer);
     setSize (designW, designH);
     rebuildPresetList();
+    markPresetClean();
+    startTimerHz (4);
 }
 
 MnBazzEditor::~MnBazzEditor()
@@ -222,6 +227,7 @@ void MnBazzEditor::applyPresetListIndex (int listIndex)
         proc.loadUserPresetByName (e.userName);
     else
         proc.loadFactoryPreset (e.factoryIndex);
+    markPresetClean();
 }
 
 void MnBazzEditor::stepPreset (int delta)
@@ -248,6 +254,7 @@ void MnBazzEditor::saveUserPreset()
                 file = file.withFileExtension (".mnbuzz");
             proc.saveUserPresetToFile (file);
             rebuildPresetList();
+            markPresetClean();
         }
     });
 }
@@ -260,8 +267,109 @@ void MnBazzEditor::loadUserPreset()
     {
         auto file = ch.getResult();
         if (file != juce::File() && proc.loadUserPresetFromFile (file))
+        {
             rebuildPresetList();
+            markPresetClean();
+        }
     });
+}
+
+void MnBazzEditor::markPresetClean()
+{
+    cleanPresetState = proc.apvts.copyState();
+    presetDirty = false;
+}
+
+void MnBazzEditor::updatePresetDirty()
+{
+    const bool d = proc.apvts.state != cleanPresetState;
+    if (d != presetDirty)
+    {
+        presetDirty = d;
+        repaint (presetBarBounds);
+    }
+}
+
+void MnBazzEditor::timerCallback()
+{
+    updatePresetDirty();
+}
+
+void MnBazzEditor::showPresetMenu()
+{
+    juce::PopupMenu m;
+    m.addItem (1, "Duplicate user preset (save as)...");
+    m.addSeparator();
+    m.addItem (2, "Rename user preset...", proc.isUserPresetActive());
+    m.addItem (3, "Delete user preset...", proc.isUserPresetActive());
+
+    m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetMenuBtn),
+                     [this] (int id)
+    {
+        if (id == 1)
+        {
+            saveUserPreset();
+            return;
+        }
+        if (! proc.isUserPresetActive())
+            return;
+
+        const auto name = proc.getActiveUserPresetName();
+        if (id == 3)
+        {
+            const auto opts = juce::MessageBoxOptions::makeOptionsOkCancel (
+                juce::AlertWindow::WarningIcon, "Delete preset", "Delete \"" + name + "\"?");
+            scopedMessageBox = juce::NativeMessageBox::showScopedAsync (
+                opts, [this, name] (int r)
+            {
+                if (r == 1 && UserPresets::remove (name))
+                {
+                    proc.loadFactoryPreset (0);
+                    rebuildPresetList();
+                    markPresetClean();
+                }
+            });
+            return;
+        }
+        if (id == 2)
+        {
+            auto* w = new juce::AlertWindow ("Rename preset", "New name:", juce::AlertWindow::QuestionIcon);
+            w->addTextEditor ("name", name);
+            w->addButton ("OK", 1, juce::KeyPress (juce::KeyPress::returnKey));
+            w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+            w->enterModalState (true, juce::ModalCallbackFunction::create ([this, w, name] (int r)
+            {
+                const auto newName = w->getTextEditorContents ("name").trim();
+                delete w;
+                if (r == 1 && newName.isNotEmpty() && UserPresets::rename (name, newName))
+                {
+                    proc.loadUserPresetByName (newName);
+                    rebuildPresetList();
+                    markPresetClean();
+                }
+            }));
+        }
+    });
+}
+
+bool MnBazzEditor::keyPressed (const juce::KeyPress& key)
+{
+    if (key == juce::KeyPress::leftKey || key == juce::KeyPress::upKey)
+    {
+        stepPreset (-1);
+        return true;
+    }
+    if (key == juce::KeyPress::rightKey || key == juce::KeyPress::downKey)
+    {
+        stepPreset (+1);
+        return true;
+    }
+    if (key.getTextCharacter() == 's' && key.getModifiers().isCommandDown())
+    {
+        saveUserPreset();
+        return true;
+    }
+    return false;
 }
 
 //==============================================================================
@@ -301,6 +409,12 @@ void MnBazzEditor::paint (juce::Graphics& g)
         g.setColour (dim());
         g.setFont (AppFonts::title (8.5f * s, 0.14f));
         g.drawText (U ("MONO BASS SYNTH  ·  v") + MNBAZZ_VERSION_STRING, taglineArea, juce::Justification::centredLeft, false);
+    }
+
+    if (presetDirty && ! presetBarBounds.isEmpty())
+    {
+        g.setColour (theme::amber());
+        g.fillEllipse ((float) presetBarBounds.getX() + 8.f, (float) presetBarBounds.getCentreY() - 4.f, 8.f, 8.f);
     }
 
     // cards
@@ -386,8 +500,10 @@ void MnBazzEditor::resized()
     taglineArea = juce::Rectangle<float> (m + 53.f, midY + 6.f, 280.f, 14.f) * s;
 
     // right-aligned buttons, then the preset browser in the space between
-    const float ch = 38.f, cy = midY - ch * 0.5f, bw = 62.f;
+    const float ch = 38.f, cy = midY - ch * 0.5f, bw = 62.f, menuW = 38.f;
     float x = (float) designW - m;
+    presetMenuBtn.setBounds (sc ({ x - menuW, cy, menuW, ch }));
+    x -= menuW + 6.f;
     for (auto* btn : { &loadBtn, &saveBtn, &initBtn })
     {
         btn->setBounds (sc ({ x - bw, cy, bw, ch }));
@@ -402,6 +518,7 @@ void MnBazzEditor::resized()
     px += 38.f + 6.f;
     presetNext.setBounds (sc ({ presetRight - 38.f, cy, 38.f, ch }));
     presetBox.setBounds (sc ({ px, cy, presetRight - 38.f - 6.f - px, ch }));
+    presetBarBounds = presetBox.getBounds();
 
     // card grid: three rows
     auto row1 = area.removeFromTop (184.f);

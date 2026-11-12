@@ -44,12 +44,15 @@ Layout MnBazzProcessor::createLayout()
     addFloat  (l, "osc2Detune","Osc2 Detune", Range (-100.f, 100.f, 0.1f), 7.f, "ct");
     addFloat  (l, "osc2Level","Osc2 Level", Range (0.f, 1.f), 0.7f);
     addFloat  (l, "subLevel", "Sub Level", Range (0.f, 1.f), 0.6f);
+    addFloat  (l, "osc2Width", "Osc2 Pulse", Range (0.08f, 0.92f), 0.5f);
+    addChoice (l, "osc2Sync", "Osc2 Sync", { "Off", "On" }, 0);
 
     addFloat (l, "cutoff", "Cutoff", Range (20.f, 20000.f, 0.f, 0.3f), 400.f, "Hz");
     addFloat (l, "res",    "Resonance", Range (0.f, 1.f), 0.25f);
     addFloat (l, "drive",  "Drive", Range (0.f, 1.f), 0.3f);
     addFloat (l, "envAmt", "Env Amount", Range (-1.f, 1.f), 0.5f);
     addFloat (l, "keytrack","Key Track", Range (0.f, 1.f), 0.3f);
+    addFloat (l, "fEnvToRes", "Env > Res", Range (0.f, 1.f), 0.f);
 
     addEnv (l, "f", "Filter", 0.002f, 0.25f, 0.1f, 0.15f);
     addEnv (l, "a", "Amp",    0.002f, 0.30f, 0.8f, 0.12f);
@@ -61,9 +64,16 @@ Layout MnBazzProcessor::createLayout()
     addChoice (l, "lfoShape","LFO Shape", { "Triangle", "Square", "Saw", "S&H", "Sine" }, 0);
     addFloat  (l, "lfoCutoff","LFO > Cutoff", Range (0.f, 1.f), 0.f);
     addFloat  (l, "lfoPitch", "LFO > Pitch", Range (0.f, 100.f), 0.f, "ct");
+    addFloat  (l, "lfoToAmp", "LFO > Amp", Range (0.f, 1.f), 0.f);
     addFloat  (l, "modCutoff", "Mod > Cutoff", Range (0.f, 1.f), 0.35f);
+    addFloat  (l, "modToPitch", "Mod > Pitch", Range (0.f, 12.f), 0.f, "st");
+
+    addFloat (l, "velToAmp", "Vel > Amp", Range (0.f, 1.f), 0.65f);
+    addFloat (l, "velToFilt", "Vel > Filt", Range (0.f, 1.f), 0.25f);
+    addFloat (l, "noiseLevel", "Noise", Range (0.f, 1.f), 0.f);
 
     addFloat (l, "master", "Volume", Range (0.f, 1.f), 0.7f);
+    addChoice (l, "outputMode", "Output", { "Mono", "Stereo" }, 1);
     return l;
 }
 
@@ -79,13 +89,21 @@ VoiceParams MnBazzProcessor::readParams() const
     p.osc1Wave = (int) get ("osc1Wave"); p.osc2Wave = (int) get ("osc2Wave");
     p.osc1Oct  = (int) get ("osc1Oct");  p.osc2Oct  = (int) get ("osc2Oct");
     p.osc2Detune = get ("osc2Detune");
-    p.osc1Level = get ("osc1Level"); p.osc2Level = get ("osc2Level"); p.subLevel = get ("subLevel");
+    p.osc1Level = get ("osc1Level"); p.osc2Level = get ("osc2Level");     p.subLevel = get ("subLevel");
+    p.osc2Width = get ("osc2Width");
+    p.osc2Sync = get ("osc2Sync") > 0.5f;
     p.cutoff = get ("cutoff"); p.res = get ("res"); p.drive = get ("drive");
     p.envAmt = get ("envAmt"); p.keytrack = get ("keytrack");
+    p.fEnvToRes = get ("fEnvToRes");
     p.glide = get ("glide"); p.legato = get ("legato") > 0.5f;
     p.lfoRate = get ("lfoRate"); p.lfoShape = (int) get ("lfoShape");
     p.lfoToCutoff = get ("lfoCutoff"); p.lfoToPitch = get ("lfoPitch");
+    p.lfoToAmp = get ("lfoToAmp");
     p.modToCutoff = get ("modCutoff");
+    p.modToPitch = get ("modToPitch");
+    p.velToAmp = get ("velToAmp");
+    p.velToFilt = get ("velToFilt");
+    p.noiseLevel = get ("noiseLevel");
     p.master = get ("master");
     p.fEnv = { get ("fA"), get ("fD"), get ("fS"), get ("fR") };
     p.aEnv = { get ("aA"), get ("aD"), get ("aS"), get ("aR") };
@@ -129,6 +147,7 @@ void MnBazzProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
     int pos = 0;
 
     float blockPeak = 0.f;
+    const bool stereoOut = get ("outputMode") > 0.5f;
 
     auto render = [&] (int end)
     {
@@ -138,7 +157,8 @@ void MnBazzProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
             blockPeak = juce::jmax (blockPeak, std::abs (s));
             pushScopeSample (s);
             left[pos] = s;
-            if (right != nullptr) right[pos] = s;
+            if (right != nullptr)
+                right[pos] = stereoOut ? s : 0.f;
         }
     };
 
@@ -146,7 +166,7 @@ void MnBazzProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
     {
         render (meta.samplePosition);
         const auto m = meta.getMessage();
-        if (m.isNoteOn())                  voice.noteOn (m.getNoteNumber());
+        if (m.isNoteOn())                  voice.noteOn (m.getNoteNumber(), m.getFloatVelocity());
         else if (m.isNoteOff())            voice.noteOff (m.getNoteNumber());
         else if (m.isAllNotesOff() || m.isAllSoundOff()) voice.allNotesOff();
         else if (m.isPitchWheel())         voice.setPitchBend ((m.getPitchWheelValue() - 8192) / 8192.f * 2.f);

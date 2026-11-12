@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Package zip
+        shell: pwsh
+        run: ./dist/package.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mnBazz-win64-${{ github.sha }}
+          path: |
+            build/mnBazz_artefacts/Release/VST3/mnBazz.vst3
+            build/mnBazz_artefacts/Release/Standalone/mnBazz.exe
+            dist/mnBazz-*-win64.zip

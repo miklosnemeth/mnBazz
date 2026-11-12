@@ -3,13 +3,15 @@
 #include "LookAndFeel.h"
 #include "Widgets.h"
 
-class MnBazzEditor : public juce::AudioProcessorEditor
+class MnBazzEditor : public juce::AudioProcessorEditor,
+                     private juce::Timer
 {
 public:
     explicit MnBazzEditor (MnBazzProcessor&);
     ~MnBazzEditor() override;
     void paint (juce::Graphics&) override;
     void resized() override;
+    bool keyPressed (const juce::KeyPress&) override;
 
 private:
     struct PresetEntry
@@ -52,15 +54,20 @@ private:
     void stepPreset (int delta);
     void saveUserPreset();
     void loadUserPreset();
+    void showPresetMenu();
+    void markPresetClean();
+    void updatePresetDirty();
+    void timerCallback() override;
 
     MnLookAndFeel laf;
     MnBazzProcessor& proc;
 
     juce::ComboBox categoryBox, presetBox;
     widgets::ChevronButton presetPrev { false }, presetNext { true };
-    juce::TextButton initBtn { "INIT" }, saveBtn { "SAVE" }, loadBtn { "LOAD" };
+    juce::TextButton initBtn { "INIT" }, saveBtn { "SAVE" }, loadBtn { "LOAD" }, presetMenuBtn { "..." };
     juce::ComponentBoundsConstrainer aspectConstrainer;
     std::unique_ptr<juce::FileChooser> fileChooser;
+    juce::ScopedMessageBox scopedMessageBox;
     juce::TooltipWindow tooltips { this, 600 };
 
     std::unique_ptr<widgets::ScopeView> scopeView;
@@ -71,6 +78,9 @@ private:
     std::vector<PresetEntry> presetEntries;
     bool ignorePresetChange = false;
     int currentListIndex = 0;
+    juce::ValueTree cleanPresetState;
+    bool presetDirty = false;
+    juce::Rectangle<int> presetBarBounds;
 
     juce::Rectangle<float> markArea, brandArea, taglineArea;
     float scale = 1.f;

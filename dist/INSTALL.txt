@@ -1,4 +1,4 @@
-mnBazz 1.0.1 — Windows x64
+mnBazz 1.1.0 — Windows x64
 
 VST3:
   Copy the mnBazz.vst3 folder to:

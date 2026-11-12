@@ -2,13 +2,13 @@
 
 Monophonic bass synthesizer for Windows. Two oscillators, sub, ladder filter, two envelopes, and an LFO. **VST3** and **Standalone**.
 
-**Home page and download:** [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/) ([magyar](https://miklosnemeth.github.io/mnBazz/hu/)) · [Latest release](https://github.com/miklosnemeth/mnBazz/releases/latest) · [Changelog](CHANGELOG.md)
+**Home page and download:** [miklosnemeth.github.io/mnBazz](https://miklosnemeth.github.io/mnBazz/) ([magyar](https://miklosnemeth.github.io/mnBazz/hu/)) · [Latest release](https://github.com/miklosnemeth/mnBazz/releases/latest) · [User guide](docs/USER_GUIDE.md) · [Changelog](CHANGELOG.md)
 
 ## Install
 
 Builds are on [Releases](https://github.com/miklosnemeth/mnBazz/releases).
 
-**Installer.** Run `mnBazz-1.0.1-win64-setup.exe` as administrator. The VST3 always goes to `C:\Program Files\Common Files\VST3\mnBazz.vst3`. Standalone is a separate checkbox, off by default. When selected, the app is installed to `C:\Program Files\mnBazz\mnBazz.exe` and a Start menu shortcut is created. Rescan plug-ins in the DAW afterwards. Uninstall also removes the VST3 folder.
+**Installer.** Run `mnBazz-1.1.0-win64-setup.exe` as administrator. The VST3 always goes to `C:\Program Files\Common Files\VST3\mnBazz.vst3`. Standalone is a separate checkbox, off by default. When selected, the app is installed to `C:\Program Files\mnBazz\mnBazz.exe` and a Start menu shortcut is created. Rescan plug-ins in the DAW afterwards. Uninstall also removes the VST3 folder.
 
 **Manual copy.** The zip contains the same two files with no extra wrapper folder: the `mnBazz.vst3` bundle and `Standalone\mnBazz.exe`.
 
@@ -33,7 +33,7 @@ One note at a time. In legato mode an overlapping key does not restart the envel
 
 ## Presets
 
-42 factory presets: Deep House, House, Techno, Trance, Sub, Classic, Acid, Funk, FX. The category filter in the header narrows the list. The arrows step through it.
+47 factory presets: Deep House, House, Techno, Trance, Sub, Classic, Acid, Funk, FX. The category filter in the header narrows the list. The arrows step through it.
 
 **SAVE** writes a `.mnbuzz` file to `Documents\mnBazz\Presets\`. **LOAD** reads from there. User presets are prefixed with `*` in the list. **INIT** loads the first factory preset.
 

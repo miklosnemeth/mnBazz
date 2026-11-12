@@ -35,6 +35,22 @@ namespace UserPresets
         return false;
     }
 
+    inline bool remove (const juce::String& name)
+    {
+        const auto f = directory().getChildFile (name + ".mnbuzz");
+        return f.existsAsFile() && f.deleteFile();
+    }
+
+    inline bool rename (const juce::String& oldName, const juce::String& newName)
+    {
+        const auto dir = directory();
+        const auto from = dir.getChildFile (oldName + ".mnbuzz");
+        const auto to = dir.getChildFile (newName + ".mnbuzz");
+        if (! from.existsAsFile() || newName.isEmpty() || to.exists())
+            return false;
+        return from.moveFileTo (to);
+    }
+
     inline bool load (juce::AudioProcessorValueTreeState& apvts, const juce::File& file)
     {
         if (auto xml = juce::XmlDocument::parse (file))

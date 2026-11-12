@@ -50,10 +50,19 @@ namespace FactoryPresets
         setParam (apvts, "lfoCutoff", p.lfoCutoff);
         setParam (apvts, "lfoPitch", p.lfoPitch);
         setParam (apvts, "modCutoff", 0.35f);
+        setParam (apvts, "modToPitch", 0.f);
+        setParam (apvts, "lfoToAmp", 0.f);
+        setParam (apvts, "velToAmp", 0.65f);
+        setParam (apvts, "velToFilt", 0.25f);
+        setParam (apvts, "noiseLevel", 0.f);
+        setParam (apvts, "osc2Width", 0.5f);
+        setParam (apvts, "osc2Sync", 0.f);
+        setParam (apvts, "fEnvToRes", 0.f);
+        setParam (apvts, "outputMode", 1.f);
         setParam (apvts, "master", p.master);
     }
 
-    constexpr int count = 42;
+    constexpr int count = 47;
 
     inline const char* categoryFor (int index)
     {
@@ -65,7 +74,8 @@ namespace FactoryPresets
             "Deep House", "Deep House", "Deep House", "Deep House",
             "House", "House", "House", "House",
             "Techno", "Techno", "Techno", "Techno",
-            "Trance", "Trance", "Trance", "Trance"
+            "Trance", "Trance", "Trance", "Trance",
+            "House", "Techno", "Techno", "Acid", "House"
         };
         constexpr int n = (int) (sizeof (cats) / sizeof (cats[0]));
         static_assert (n == count);
@@ -136,6 +146,12 @@ namespace FactoryPresets
             { "Uplift Line",   0, 0, 0, 1, 1,0, 0.65f,0.4f, 0.4f,  10.f,  1100.f,0.28f,0.26f,0.62f,0.58f, 0.002f,0.22f,0.12f,0.18f, 0.002f,0.28f,0.62f,0.16f, 0.04f,0.15f,0.1f, 0.f,0.66f },
             { "Psy Bite",      0, 0, 0,-1, 0,2, 0.9f, 0.25f,0.35f, 3.f,   260.f,0.7f, 0.4f, 0.95f,0.5f,  0.001f,0.08f,0.f,  0.1f,  0.001f,0.12f,0.f,  0.12f, 0.f,  0.f,  0.f,  0.f,0.64f },
             { "Trance Gate",   0,-1, 0, 0, 1,1, 0.75f,0.6f, 0.45f, 8.f,   560.f,0.36f,0.24f,0.35f,0.4f,  0.002f,0.3f, 0.4f, 0.25f, 0.002f,0.25f,0.88f,0.2f,  0.f,  10.f, 0.48f,0.f,0.67f },
+
+            { "Vel Pluck",     0, 0, 1, 0, 0,0, 0.55f,0.5f,0.3f, 5.f,  1100.f,0.3f,0.32f,0.85f,0.6f,  0.001f,0.06f,0.f,0.16f, 0.001f,0.08f,0.25f,0.18f, 0.f, 0.f,0.f,0.f,0.66f },
+            { "Click Sub",     0,-2, 0,-2, 0,0, 0.35f,0.f,1.f, 0.f,  95.f, 0.08f,0.55f,0.2f, 0.1f,  0.001f,0.45f,0.f,0.2f,  0.001f,0.05f,0.95f,0.06f, 0.f, 0.f,0.f,0.f,0.78f },
+            { "Reese Wide",    0, 0, 0, 0, 1,0, 0.72f,0.78f,0.42f, 32.f, 310.f,0.58f,0.48f,0.42f,0.52f, 0.006f,0.38f,0.28f,0.32f, 0.003f,0.42f,0.86f,0.28f, 0.04f,0.45f,0.3f,6.f,0.69f },
+            { "Sync Acid",     0, 0, 0, 0, 0,1, 0.9f,0.2f,0.15f, 2.f,  880.f,0.74f,0.7f,0.92f,0.58f, 0.001f,0.04f,0.f,0.07f, 0.001f,0.12f,0.72f,0.09f, 0.f,14.f,0.5f,5.f,0.62f },
+            { "FM Knock",      1,-1, 1, 0, 0,0, 0.65f,0.55f,0.7f, 14.f, 420.f,0.36f,0.58f,0.75f,0.45f, 0.001f,0.1f,0.f,0.12f, 0.001f,0.14f,0.55f,0.1f,  0.f, 6.f,0.12f,0.f,0.7f },
         };
         static_assert (sizeof (factory) / sizeof (factory[0]) == count);
         const int n = (int) (sizeof (factory) / sizeof (factory[0]));
@@ -145,5 +161,20 @@ namespace FactoryPresets
     inline void apply (juce::AudioProcessorValueTreeState& apvts, int index)
     {
         apply (apvts, get (index));
+        const auto name = juce::String (get (index).name);
+        if (name == "Sync Acid")
+        {
+            setParam (apvts, "osc2Sync", 1.f);
+            setParam (apvts, "osc2Width", 0.22f);
+        }
+        else if (name == "Click Sub")
+        {
+            setParam (apvts, "noiseLevel", 0.38f);
+        }
+        else if (name == "Vel Pluck")
+        {
+            setParam (apvts, "velToAmp", 0.95f);
+            setParam (apvts, "velToFilt", 0.45f);
+        }
     }
 }

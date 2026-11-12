@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(mnBazz VERSION 1.0.1)
+project(mnBazz VERSION 1.1.0)
 include(cmake/Version.cmake)
 
 set(CMAKE_CXX_STANDARD 23)
